@@ -1,0 +1,110 @@
+type Query {
+    aiInventoryMagicMoments(
+        pageSize: Int = 20
+        currentPage: Int = 1
+        filter: AiInventoryMagicMomentFilterInput
+        sort: AiInventoryMagicMomentSortInput
+    ): AiInventoryMagicMomentOutput @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\MagicMoments")
+    
+    aiInventoryMagicMoment(
+        id: Int!
+    ): AiInventoryMagicMoment @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\MagicMoment")
+    
+    aiInventoryUnreadMagicMomentsCount: Int @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\UnreadMagicMomentsCount")
+    
+    aiInventorySuccessTracker(
+        pageSize: Int = 20
+        currentPage: Int = 1
+        filter: AiInventorySuccessTrackerFilterInput
+        sort: AiInventorySuccessTrackerSortInput
+    ): AiInventorySuccessTrackerOutput @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\SuccessTracker")
+}
+
+type Mutation {
+    aiInventoryMarkMagicMomentAsRead(
+        id: Int!
+    ): AiInventoryMagicMoment @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\MarkMagicMomentAsRead")
+    
+    aiInventoryMarkMagicMomentAsActioned(
+        id: Int!
+    ): AiInventoryMagicMoment @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\MarkMagicMomentAsActioned")
+    
+    aiInventoryDetectOpportunities: Boolean @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\DetectOpportunities")
+    
+    aiInventoryGenerateInsights: Boolean @resolver(class: "AI\\InventoryOptimizer\\Model\\Resolver\\GenerateInsights")
+}
+
+type AiInventoryMagicMoment {
+    entity_id: Int
+    moment_type: String
+    title: String
+    description: String
+    impact_value: Float
+    impact_type: String
+    data: String
+    is_read: Boolean
+    is_actioned: Boolean
+    created_at: String
+    updated_at: String
+}
+
+input AiInventoryMagicMomentFilterInput {
+    entity_id: FilterTypeInput
+    moment_type: FilterTypeInput
+    title: FilterTypeInput
+    is_read: FilterTypeInput
+    is_actioned: FilterTypeInput
+    created_at: FilterTypeInput
+}
+
+input AiInventoryMagicMomentSortInput {
+    entity_id: SortEnum
+    moment_type: SortEnum
+    title: SortEnum
+    impact_value: SortEnum
+    created_at: SortEnum
+}
+
+type AiInventoryMagicMomentOutput {
+    items: [AiInventoryMagicMoment]
+    total_count: Int
+    page_info: SearchResultPageInfo
+}
+
+type AiInventorySuccessTracker {
+    entity_id: Int
+    user_id: Int
+    success_type: String
+    title: String
+    description: String
+    impact_value: Float
+    impact_type: String
+    time_saved: Float
+    is_highlighted: Boolean
+    created_at: String
+    updated_at: String
+}
+
+input AiInventorySuccessTrackerFilterInput {
+    entity_id: FilterTypeInput
+    user_id: FilterTypeInput
+    success_type: FilterTypeInput
+    title: FilterTypeInput
+    is_highlighted: FilterTypeInput
+    created_at: FilterTypeInput
+}
+
+input AiInventorySuccessTrackerSortInput {
+    entity_id: SortEnum
+    success_type: SortEnum
+    title: SortEnum
+    impact_value: SortEnum
+    time_saved: SortEnum
+    created_at: SortEnum
+}
+
+type AiInventorySuccessTrackerOutput {
+    items: [AiInventorySuccessTracker]
+    total_count: Int
+    page_info: SearchResultPageInfo
+} 

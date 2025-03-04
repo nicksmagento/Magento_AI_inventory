@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>AI Inventory Dashboard</title>
+        <css src="AI_InventoryOptimizer::css/dashboard.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Backend\Block\Template" name="ai_inventory_dashboard" template="AI_InventoryOptimizer::dashboard/index.phtml">
+                <block class="Magento\Backend\Block\Template" name="ai_inventory_forecast_chart" template="AI_InventoryOptimizer::dashboard/forecast_chart.phtml"/>
+                <block class="Magento\Backend\Block\Template" name="ai_inventory_stock_status" template="AI_InventoryOptimizer::dashboard/stock_status.phtml"/>
+                <block class="Magento\Backend\Block\Template" name="ai_inventory_channel_sync" template="AI_InventoryOptimizer::dashboard/channel_sync.phtml"/>
+                <block class="Magento\Backend\Block\Template" name="ai_inventory_fraud_stats" template="AI_InventoryOptimizer::dashboard/fraud_stats.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page> 

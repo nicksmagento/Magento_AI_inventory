@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="AI_InventoryOptimizer::ai_inventory" title="AI Inventory" sortOrder="50">
+                    <resource id="AI_InventoryOptimizer::dashboard" title="Dashboard" sortOrder="10" />
+                    <resource id="AI_InventoryOptimizer::magic_moments" title="Magic Moments" sortOrder="20" />
+                    <resource id="AI_InventoryOptimizer::onboarding" title="Onboarding" sortOrder="30" />
+                    <resource id="AI_InventoryOptimizer::success_tracker" title="Success Tracker" sortOrder="40" />
+                    <resource id="AI_InventoryOptimizer::settings" title="Settings" sortOrder="50" />
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="AI_InventoryOptimizer::config" title="AI Inventory Optimizer" sortOrder="50" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config> 

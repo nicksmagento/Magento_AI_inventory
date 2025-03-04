@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * AI Inventory Optimizer Web API Configuration
+ *
+ * @category  AI
+ * @package   AI_InventoryOptimizer
+ * @author    AI Inventory Team <support@example.com>
+ * @copyright 2023 AI Inventory (https://www.example.com)
+ * @license   https://opensource.org/licenses/OSL-3.0 OSL-3.0
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/webapi.xsd">
+    <!-- Magic Moments API -->
+    <route url="/V1/ai-inventory/magic-moments" method="GET">
+        <service class="AI\InventoryOptimizer\Api\MagicMomentManagementInterface" method="getList"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::magic_moments"/>
+        </resources>
+        <data>
+            <parameter name="searchCriteria" force="true">%searchCriteria%</parameter>
+        </data>
+    </route>
+    <route url="/V1/ai-inventory/magic-moments/unread-count" method="GET">
+        <service class="AI\InventoryOptimizer\Api\MagicMomentManagementInterface" method="getUnreadCount"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::magic_moments"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/magic-moments/:momentId/mark-read" method="POST">
+        <service class="AI\InventoryOptimizer\Api\MagicMomentManagementInterface" method="markAsRead"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::magic_moments"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/magic-moments/:momentId/mark-actioned" method="POST">
+        <service class="AI\InventoryOptimizer\Api\MagicMomentManagementInterface" method="markAsActioned"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::magic_moments"/>
+        </resources>
+    </route>
+    
+    <!-- Opportunity Detection API -->
+    <route url="/V1/ai-inventory/detect-opportunities" method="POST">
+        <service class="AI\InventoryOptimizer\Api\OpportunityDetectionInterface" method="detectOpportunities"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::magic_moments"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/detect-competitor-stockouts" method="POST">
+        <service class="AI\InventoryOptimizer\Api\OpportunityDetectionInterface" method="detectCompetitorStockouts"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::magic_moments"/>
+        </resources>
+    </route>
+    
+    <!-- Instant Value Generator API -->
+    <route url="/V1/ai-inventory/generate-insights" method="POST">
+        <service class="AI\InventoryOptimizer\Api\InstantValueGeneratorInterface" method="generateInsights"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::onboarding"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/identify-stockouts" method="POST">
+        <service class="AI\InventoryOptimizer\Api\InstantValueGeneratorInterface" method="identifyStockouts"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::onboarding"/>
+        </resources>
+    </route>
+    
+    <!-- Success Tracker API -->
+    <route url="/V1/ai-inventory/success-tracker" method="POST">
+        <service class="AI\InventoryOptimizer\Api\SuccessTrackerRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::success_tracker"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/success-tracker/:trackerId" method="GET">
+        <service class="AI\InventoryOptimizer\Api\SuccessTrackerRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::success_tracker"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/success-tracker" method="GET">
+        <service class="AI\InventoryOptimizer\Api\SuccessTrackerRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::success_tracker"/>
+        </resources>
+        <data>
+            <parameter name="searchCriteria" force="true">%searchCriteria%</parameter>
+        </data>
+    </route>
+    <route url="/V1/ai-inventory/success-tracker/:trackerId" method="DELETE">
+        <service class="AI\InventoryOptimizer\Api\SuccessTrackerRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::success_tracker"/>
+        </resources>
+    </route>
+    
+    <!-- Forecasting API -->
+    <route url="/V1/ai-inventory/forecast/:sku" method="GET">
+        <service class="AI\InventoryOptimizer\Api\ForecastingInterface" method="getForecast"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::forecasting"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/reorder-suggestions" method="GET">
+        <service class="AI\InventoryOptimizer\Api\ForecastingInterface" method="getReorderSuggestions"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::forecasting"/>
+        </resources>
+    </route>
+    
+    <!-- Stock Balancer API -->
+    <route url="/V1/ai-inventory/stock-transfer" method="POST">
+        <service class="AI\InventoryOptimizer\Api\StockBalancerInterface" method="createTransfer"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::stock_balancer"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/stock-balance/recommendations" method="GET">
+        <service class="AI\InventoryOptimizer\Api\StockBalancerInterface" method="getRecommendations"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::stock_balancer"/>
+        </resources>
+    </route>
+    
+    <!-- Order Router API -->
+    <route url="/V1/ai-inventory/route-order" method="POST">
+        <service class="AI\InventoryOptimizer\Api\OrderRouterInterface" method="routeOrder"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::order_router"/>
+        </resources>
+    </route>
+    
+    <!-- Fraud Detection API -->
+    <route url="/V1/ai-inventory/fraud-check" method="POST">
+        <service class="AI\InventoryOptimizer\Api\FraudDetectionInterface" method="checkOrder"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::fraud_detection"/>
+        </resources>
+    </route>
+    
+    <!-- Chat Copilot API -->
+    <route url="/V1/ai-inventory/chat" method="POST">
+        <service class="AI\InventoryOptimizer\Api\ChatCopilotInterface" method="processCommand"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::chat_copilot"/>
+        </resources>
+    </route>
+    
+    <!-- AI Training API -->
+    <route url="/V1/ai-inventory/train-model" method="POST">
+        <service class="AI\InventoryOptimizer\Api\TrainingInterface" method="trainModel"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::ai_training"/>
+        </resources>
+    </route>
+    <route url="/V1/ai-inventory/model-status" method="GET">
+        <service class="AI\InventoryOptimizer\Api\TrainingInterface" method="getModelStatus"/>
+        <resources>
+            <resource ref="AI_InventoryOptimizer::ai_training"/>
+        </resources>
+    </route>
+</routes> 

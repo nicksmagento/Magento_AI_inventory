@@ -1,0 +1,85 @@
+<?php
+/**
+ * AI Inventory Dashboard Template
+ */
+?>
+<div class="ai-inventory-dashboard">
+    <div class="dashboard-header">
+        <h1><?= $block->escapeHtml(__('AI Inventory Optimizer Dashboard')) ?></h1>
+        <div class="dashboard-actions">
+            <button id="refresh-dashboard" class="action-primary">
+                <span><?= $block->escapeHtml(__('Refresh Data')) ?></span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="dashboard-summary">
+        <div class="summary-card">
+            <div class="card-title"><?= $block->escapeHtml(__('Products Requiring Reorder')) ?></div>
+            <div class="card-value">24</div>
+            <div class="card-trend positive">+3 from yesterday</div>
+        </div>
+        <div class="summary-card">
+            <div class="card-title"><?= $block->escapeHtml(__('Stock Transfers Pending')) ?></div>
+            <div class="card-value">12</div>
+            <div class="card-trend negative">-5 from yesterday</div>
+        </div>
+        <div class="summary-card">
+            <div class="card-title"><?= $block->escapeHtml(__('Channel Sync Status')) ?></div>
+            <div class="card-value">98%</div>
+            <div class="card-trend positive">+2% from yesterday</div>
+        </div>
+        <div class="summary-card">
+            <div class="card-title"><?= $block->escapeHtml(__('Fraud Orders Detected')) ?></div>
+            <div class="card-value">7</div>
+            <div class="card-trend negative">-3 from yesterday</div>
+        </div>
+    </div>
+    
+    <div class="dashboard-row">
+        <div class="dashboard-column">
+            <?= $block->getChildHtml('ai_inventory_forecast_chart') ?>
+        </div>
+        <div class="dashboard-column">
+            <?= $block->getChildHtml('ai_inventory_stock_status') ?>
+        </div>
+    </div>
+    
+    <div class="dashboard-row">
+        <div class="dashboard-column">
+            <?= $block->getChildHtml('ai_inventory_channel_sync') ?>
+        </div>
+        <div class="dashboard-column">
+            <?= $block->getChildHtml('ai_inventory_fraud_stats') ?>
+        </div>
+    </div>
+</div>
+
+<script>
+require([
+    'jquery',
+    'chartjs'
+], function ($, Chart) {
+    'use strict';
+    
+    $(document).ready(function () {
+        // Initialize dashboard charts and data
+        initDashboard();
+        
+        // Refresh button handler
+        $('#refresh-dashboard').on('click', function () {
+            refreshDashboardData();
+        });
+    });
+    
+    function initDashboard() {
+        // This would initialize all dashboard components
+        console.log('AI Inventory Dashboard initialized');
+    }
+    
+    function refreshDashboardData() {
+        // This would refresh all dashboard data via AJAX
+        console.log('Refreshing dashboard data');
+    }
+});
+</script> 

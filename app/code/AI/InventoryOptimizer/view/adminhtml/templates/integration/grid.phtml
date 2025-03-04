@@ -1,0 +1,127 @@
+<?php
+/**
+ * @var \AI\InventoryOptimizer\Block\Adminhtml\Integration\Grid $block
+ */
+$integrationsByType = $block->getIntegrationsByType();
+?>
+
+<div class="ai-inventory-integrations">
+    <div class="admin__data-grid-header">
+        <div class="admin__data-grid-header-row">
+            <div class="admin__data-grid-actions-wrap">
+                <div class="page-actions">
+                    <div class="page-actions-buttons">
+                        <button id="sync-all-integrations" title="<?= $block->escapeHtmlAttr(__('Sync All Integrations')) ?>" type="button" class="action-default scalable primary">
+                            <span><?= $block->escapeHtml(__('Sync All Integrations')) ?></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <?php foreach ($integrationsByType as $type => $typeData): ?>
+        <div class="integration-type-section">
+            <h2><?= $block->escapeHtml($typeData['label']) ?></h2>
+            
+            <div class="admin__data-grid-wrap">
+                <table class="data-grid">
+                    <thead>
+                        <tr>
+                            <th class="data-grid-th"><?= $block->escapeHtml(__('Integration')) ?></th>
+                            <th class="data-grid-th"><?= $block->escapeHtml(__('Status')) ?></th>
+                            <th class="data-grid-th"><?= $block->escapeHtml(__('Last Sync')) ?></th>
+                            <th class="data-grid-th"><?= $block->escapeHtml(__('Actions')) ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($typeData['integrations'] as $code => $integration): ?>
+                            <tr>
+                                <td class="data-grid-cell">
+                                    <strong><?= $block->escapeHtml($integration['name']) ?></strong>
+                                    <?php if (!$integration['enabled']): ?>
+                                        <div class="integration-disabled-note"><?= $block->escapeHtml(__('(Disabled)')) ?></div>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="data-grid-cell">
+                                    <span class="<?= $block->escapeHtmlAttr($integration['status']['class']) ?>">
+                                        <span><?= $block->escapeHtml($integration['status']['label']) ?></span>
+                                    </span>
+                                </td>
+                                <td class="data-grid-cell">
+                                    <?php if ($integration['enabled'] && $integration['status']['state'] === 'connected'): ?>
+                                        <?= $block->escapeHtml(__('N/A')) ?>
+                                    <?php else: ?>
+                                        <?= $block->escapeHtml(__('N/A')) ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="data-grid-cell">
+                                    <a href="<?= $block->escapeUrl($block->getConfigUrl($code)) ?>" class="action-menu-item">
+                                        <?= $block->escapeHtml(__('Configure')) ?>
+                                    </a>
+                                    <?php if ($integration['enabled']): ?>
+                                        <a href="<?= $block->escapeUrl($block->getSyncUrl($code)) ?>" class="action-menu-item">
+                                            <?= $block->escapeHtml(__('Sync Now')) ?>
+                                        </a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+<script>
+require([
+    'jquery',
+    'Magento_Ui/js/modal/alert'
+], function ($, alert) {
+    $('#sync-all-integrations').click(function () {
+        $.ajax({
+            url: '<?= $block->escapeJs($block->getUrl('ai_inventory/integration/syncAll')) ?>',
+            type: 'POST',
+            dataType: 'json',
+            showLoader: true,
+            success: function (response) {
+                if (response.success) {
+                    alert({
+                        title: $.mage.__('Success'),
+                        content: response.message
+                    });
+                    
+                    // Reload the page to show updated status
+                    location.reload();
+                } else {
+                    alert({
+                        title: $.mage.__('Error'),
+                        content: response.message
+                    });
+                }
+            },
+            error: function () {
+                alert({
+                    title: $.mage.__('Error'),
+                    content: $.mage.__('An error occurred while syncing integrations.')
+                });
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.integration-type-section {
+    margin-bottom: 30px;
+}
+.integration-type-section h2 {
+    margin-bottom: 15px;
+}
+.integration-disabled-note {
+    color: #999;
+    font-size: 0.9em;
+    font-style: italic;
+}
+</style> 

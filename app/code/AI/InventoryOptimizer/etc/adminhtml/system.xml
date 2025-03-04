@@ -1,0 +1,309 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="ai_inventory" translate="label" sortOrder="500">
+            <label>AI Inventory</label>
+        </tab>
+        <section id="ai_inventory_optimizer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>AI Inventory Optimizer</label>
+            <tab>ai_inventory</tab>
+            <resource>AI_InventoryOptimizer::config</resource>
+            
+            <!-- General Settings -->
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="log_level" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Level</label>
+                    <source_model>AI\InventoryOptimizer\Model\Config\Source\LogLevel</source_model>
+                </field>
+            </group>
+            
+            <!-- Magic Moments Settings -->
+            <group id="magic_moments" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Magic Moments Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Magic Moments</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="competitor_stockout_detection" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Competitor Stockout Detection</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="competitor_api_key" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Competitor API Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="competitor_stockout_detection">1</field>
+                    </depends>
+                </field>
+                <field id="social_trend_detection" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Social Media Trend Detection</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="social_trends_api_key" translate="label" type="obscure" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Social Trends API Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="social_trend_detection">1</field>
+                    </depends>
+                </field>
+                <field id="weather_issue_detection" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Weather Issue Detection</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="weather_api_key" translate="label" type="obscure" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Weather API Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="weather_issue_detection">1</field>
+                    </depends>
+                </field>
+            </group>
+            
+            <!-- Onboarding Settings -->
+            <group id="onboarding" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Onboarding Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Friction-Free Onboarding</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="instant_value_generation" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Instant Value Generation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="success_tracking" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Success Tracking</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="progressive_disclosure" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Progressive Disclosure</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            
+            <!-- Merchant-Centric Language Settings -->
+            <group id="language" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Merchant-Centric Language Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Merchant-Centric Language</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="business_goals" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Business Goals</label>
+                    <source_model>AI\InventoryOptimizer\Model\Config\Source\BusinessGoals</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="revenue_impact" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Revenue Impact</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="time_savings" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Time Savings</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="customer_experience" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Show Customer Experience Impact</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            
+            <group id="integrations" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>External System Integrations</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Integrations</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sync_frequency" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Synchronization Frequency</label>
+                    <source_model>AI\InventoryOptimizer\Model\Config\Source\SyncFrequency</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                
+                <!-- ERP Systems -->
+                <group id="erp" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>ERP Systems</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                    
+                    <!-- SAP Integration -->
+                    <group id="sap" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>SAP Integration</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable SAP Integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <field id="api_url" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>API URL</label>
+                            <depends>
+                                <field id="enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="client_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Client ID</label>
+                            <depends>
+                                <field id="enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="client_secret" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Client Secret</label>
+                            <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                            <depends>
+                                <field id="enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="warehouse_mapping" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Warehouse Mapping</label>
+                            <comment>Enter one mapping per line in format: magento_source_code=sap_warehouse_id</comment>
+                            <depends>
+                                <field id="enabled">1</field>
+                            </depends>
+                        </field>
+                        <field id="test_connection" translate="label" type="button" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Test Connection</label>
+                            <frontend_model>AI\InventoryOptimizer\Block\Adminhtml\System\Config\TestConnection</frontend_model>
+                            <depends>
+                                <field id="enabled">1</field>
+                            </depends>
+                        </field>
+                    </group>
+                    
+                    <!-- NetSuite Integration -->
+                    <group id="netsuite" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>NetSuite Integration</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable NetSuite Integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <!-- Similar fields as SAP integration -->
+                    </group>
+                    
+                    <!-- Microsoft Dynamics Integration -->
+                    <group id="dynamics" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Microsoft Dynamics Integration</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Microsoft Dynamics Integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <!-- Similar fields as SAP integration -->
+                    </group>
+                </group>
+                
+                <!-- Inventory Management Systems -->
+                <group id="ims" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Inventory Management Systems</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                    
+                    <!-- Brightpearl Integration -->
+                    <group id="brightpearl" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Brightpearl Integration</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Brightpearl Integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <!-- Similar fields as SAP integration -->
+                    </group>
+                    
+                    <!-- Additional inventory systems would be configured similarly -->
+                </group>
+                
+                <!-- Order Management Systems -->
+                <group id="oms" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Order Management Systems</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                    
+                    <!-- ShipStation Integration -->
+                    <group id="shipstation" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>ShipStation Integration</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable ShipStation Integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <!-- Similar fields as SAP integration -->
+                    </group>
+                    
+                    <!-- Additional order management systems would be configured similarly -->
+                </group>
+                
+                <!-- Warehouse Management Systems -->
+                <group id="wms" translate="label" type="text" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Warehouse Management Systems</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                    
+                    <!-- Manhattan Associates Integration -->
+                    <group id="manhattan" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Manhattan Associates Integration</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Manhattan Associates Integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <!-- Similar fields as SAP integration -->
+                    </group>
+                    
+                    <!-- Additional warehouse management systems would be configured similarly -->
+                </group>
+                
+                <!-- Marketplace Integrations -->
+                <group id="marketplace" translate="label" type="text" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Marketplace Integrations</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                    
+                    <!-- Amazon Integration -->
+                    <group id="amazon" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Amazon Integration</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable Amazon Integration</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <!-- Similar fields as SAP integration -->
+                    </group>
+                    
+                    <!-- Additional marketplace integrations would be configured similarly -->
+                </group>
+            </group>
+        </section>
+    </system>
+</config> 

@@ -1,0 +1,170 @@
+<?php
+/**
+ * AI Chat Copilot Template
+ */
+?>
+<div class="ai-chat-copilot">
+    <div class="chat-header">
+        <h1><?= $block->escapeHtml(__('AI Chat Copilot')) ?></h1>
+        <p><?= $block->escapeHtml(__('Ask me anything about your inventory or give me commands to manage it.')) ?></p>
+    </div>
+    
+    <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+            <div class="message ai">
+                <div class="message-content">
+                    <?= $block->escapeHtml(__('Hello! I\'m your AI Inventory Assistant. How can I help you today?')) ?>
+                </div>
+                <div class="message-time">Just now</div>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <form id="chat-form">
+                <div class="input-group">
+                    <input type="text" id="chat-command" name="command" placeholder="<?= $block->escapeHtml(__('Type your command or question...')) ?>" autocomplete="off">
+                    <button type="submit" class="action-primary">
+                        <span><?= $block->escapeHtml(__('Send')) ?></span>
+                    </button>
+                </div>
+                <div class="voice-input">
+                    <button type="button" id="voice-command-btn" class="action-secondary">
+                        <span><?= $block->escapeHtml(__('Voice Command')) ?></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="chat-suggestions">
+        <h3><?= $block->escapeHtml(__('Suggested Commands')) ?></h3>
+        <div class="suggestion-chips">
+            <button class="suggestion-chip" data-command="Reorder Product SKU-123 if stock falls below 100">
+                <?= $block->escapeHtml(__('Reorder Product SKU-123 if stock falls below 100')) ?>
+            </button>
+            <button class="suggestion-chip" data-command="Show me low stock items">
+                <?= $block->escapeHtml(__('Show me low stock items')) ?>
+            </button>
+            <button class="suggestion-chip" data-command="Transfer slow-moving inventory to Warehouse B">
+                <?= $block->escapeHtml(__('Transfer slow-moving inventory to Warehouse B')) ?>
+            </button>
+            <button class="suggestion-chip" data-command="What's my inventory status?">
+                <?= $block->escapeHtml(__('What\'s my inventory status?')) ?>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+require([
+    'jquery',
+    'mage/url'
+], function ($, urlBuilder) {
+    'use strict';
+    
+    $(document).ready(function () {
+        // Chat form submission
+        $('#chat-form').on('submit', function (e) {
+            e.preventDefault();
+            
+            var command = $('#chat-command').val();
+            if (!command) {
+                return;
+            }
+            
+            // Add user message to chat
+            addMessage(command, 'user');
+            
+            // Clear input
+            $('#chat-command').val('');
+            
+            // Send command to AI
+            sendCommand(command);
+        });
+        
+        // Suggestion chip clicks
+        $('.suggestion-chip').on('click', function () {
+            var command = $(this).data('command');
+            $('#chat-command').val(command);
+            $('#chat-form').submit();
+        });
+        
+        // Voice command button
+        $('#voice-command-btn').on('click', function () {
+            startVoiceRecognition();
+        });
+    });
+    
+    function addMessage(text, sender) {
+        var time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        var messageHtml = '<div class="message ' + sender + '">' +
+            '<div class="message-content">' + text + '</div>' +
+            '<div class="message-time">' + time + '</div>' +
+            '</div>';
+        
+        $('#chat-messages').append(messageHtml);
+        
+        // Scroll to bottom
+        var chatMessages = document.getElementById('chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+    
+    function sendCommand(command) {
+        $.ajax({
+            url: urlBuilder.build('ai_inventory/chat/sendCommand'),
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                command: command
+            },
+            beforeSend: function () {
+                // Show loading indicator
+                addMessage('Processing your request...', 'ai loading');
+            },
+            success: function (response) {
+                // Remove loading message
+                $('.message.loading').remove();
+                
+                if (response.success) {
+                    addMessage(response.message, 'ai');
+                } else {
+                    addMessage('Sorry, I encountered an error: ' + response.message, 'ai error');
+                }
+            },
+            error: function () {
+                // Remove loading message
+                $('.message.loading').remove();
+                
+                addMessage('Sorry, I encountered a technical error. Please try again.', 'ai error');
+            }
+        });
+    }
+    
+    function startVoiceRecognition() {
+        if (!('webkitSpeechRecognition' in window)) {
+            addMessage('Voice recognition is not supported in your browser.', 'ai error');
+            return;
+        }
+        
+        var recognition = new webkitSpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        
+        recognition.onstart = function() {
+            addMessage('Listening... Speak your command.', 'ai');
+        };
+        
+        recognition.onresult = function(event) {
+            var command = event.results[0][0].transcript;
+            $('#chat-command').val(command);
+            $('#chat-form').submit();
+        };
+        
+        recognition.onerror = function(event) {
+            addMessage('Voice recognition error: ' + event.error, 'ai error');
+        };
+        
+        recognition.start();
+    }
+});
+</script> 

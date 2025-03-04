@@ -1,0 +1,90 @@
+<?php
+/**
+ * @var \AI\InventoryOptimizer\Block\Adminhtml\System\Config\TestConnection $block
+ */
+?>
+<div class="actions actions-test-connection">
+    <?= $block->getButtonHtml() ?>
+    <span class="connection-indicator" id="connection_indicator"></span>
+</div>
+
+<script>
+require([
+    'jquery',
+    'Magento_Ui/js/modal/alert',
+    'mage/translate'
+], function ($, alert, $t) {
+    $('#test_connection_button').click(function () {
+        var params = {
+            integration_type: '<?= $block->escapeJs($block->getIntegrationType()) ?>',
+            integration_code: '<?= $block->escapeJs($block->getIntegrationCode()) ?>'
+        };
+        
+        // Add form fields to params
+        var prefix = 'groups[integrations][groups][' + params.integration_type + '][groups][' + params.integration_code + '][fields]';
+        params[prefix + '[api_url][value]'] = $('#' + prefix + '_api_url').val();
+        params[prefix + '[client_id][value]'] = $('#' + prefix + '_client_id').val();
+        params[prefix + '[client_secret][value]'] = $('#' + prefix + '_client_secret').val();
+        
+        $('#connection_indicator').html('<span class="spinner"><span></span></span><span class="text">' + $t('Testing...') + '</span>');
+        
+        $.ajax({
+            url: '<?= $block->escapeJs($block->getAjaxUrl()) ?>',
+            type: 'POST',
+            data: params,
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#connection_indicator').html('<span class="success">' + $t('Connection successful!') + '</span>');
+                } else {
+                    $('#connection_indicator').html('<span class="error">' + $t('Connection failed!') + '</span>');
+                    alert({
+                        title: $t('Connection Failed'),
+                        content: response.message || $t('Could not connect to the external system. Please check your credentials and try again.')
+                    });
+                }
+            },
+            error: function () {
+                $('#connection_indicator').html('<span class="error">' + $t('Connection failed!') + '</span>');
+                alert({
+                    title: $t('Connection Failed'),
+                    content: $t('An error occurred while testing the connection. Please try again.')
+                });
+            }
+        });
+    });
+});
+</script>
+
+<style>
+.actions-test-connection {
+    display: flex;
+    align-items: center;
+}
+.connection-indicator {
+    margin-left: 10px;
+}
+.connection-indicator .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.connection-indicator .spinner span {
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: url('<?= $block->getViewFileUrl('images/loader-1.gif') ?>') no-repeat;
+    background-size: 16px;
+}
+.connection-indicator .text {
+    vertical-align: middle;
+}
+.connection-indicator .success {
+    color: #006400;
+}
+.connection-indicator .error {
+    color: #e22626;
+}
+</style> 

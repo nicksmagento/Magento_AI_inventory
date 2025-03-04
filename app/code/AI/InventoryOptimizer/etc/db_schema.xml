@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="ai_inventory_forecast" resource="default" engine="innodb" comment="AI Inventory Forecast">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="sku" nullable="false" length="64" comment="Product SKU"/>
+        <column xsi:type="int" name="forecasted_demand" unsigned="true" nullable="false" default="0" comment="Forecasted Demand"/>
+        <column xsi:type="int" name="suggested_reorder_qty" unsigned="true" nullable="false" default="0" comment="Suggested Reorder Quantity"/>
+        <column xsi:type="date" name="next_reorder_date" nullable="true" comment="Next Reorder Date"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="AI_INVENTORY_FORECAST_SKU">
+            <column name="sku"/>
+        </constraint>
+        <index referenceId="AI_INVENTORY_FORECAST_SKU" indexType="btree">
+            <column name="sku"/>
+        </index>
+    </table>
+    
+    <table name="ai_inventory_stock_transfer" resource="default" engine="innodb" comment="AI Inventory Stock Transfer">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="sku" nullable="false" length="64" comment="Product SKU"/>
+        <column xsi:type="int" name="transfer_qty" unsigned="true" nullable="false" default="0" comment="Transfer Quantity"/>
+        <column xsi:type="varchar" name="from_warehouse" nullable="false" length="32" comment="Source Warehouse"/>
+        <column xsi:type="varchar" name="to_warehouse" nullable="false" length="32" comment="Destination Warehouse"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="32" default="pending" comment="Transfer Status"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="AI_INVENTORY_STOCK_TRANSFER_SKU" indexType="btree">
+            <column name="sku"/>
+        </index>
+        <index referenceId="AI_INVENTORY_STOCK_TRANSFER_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+    
+    <table name="ai_inventory_order_routing" resource="default" engine="innodb" comment="AI Inventory Order Routing">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="order_id" nullable="false" length="32" comment="Order ID"/>
+        <column xsi:type="varchar" name="assigned_warehouse" nullable="false" length="32" comment="Assigned Warehouse"/>
+        <column xsi:type="int" name="estimated_delivery_days" unsigned="true" nullable="false" default="0" comment="Estimated Delivery Days"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="AI_INVENTORY_ORDER_ROUTING_ORDER_ID">
+            <column name="order_id"/>
+        </constraint>
+        <index referenceId="AI_INVENTORY_ORDER_ROUTING_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+    </table>
+    
+    <table name="ai_inventory_fraud_check" resource="default" engine="innodb" comment="AI Inventory Fraud Check">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="order_id" nullable="false" length="32" comment="Order ID"/>
+        <column xsi:type="varchar" name="fraud_risk" nullable="false" length="32" comment="Fraud Risk Level"/>
+        <column xsi:type="decimal" name="risk_score" scale="2" precision="5" unsigned="true" nullable="false" default="0" comment="Risk Score"/>
+        <column xsi:type="varchar" name="action" nullable="false" length="64" comment="Recommended Action"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="AI_INVENTORY_FRAUD_CHECK_ORDER_ID">
+            <column name="order_id"/>
+        </constraint>
+        <index referenceId="AI_INVENTORY_FRAUD_CHECK_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <index referenceId="AI_INVENTORY_FRAUD_CHECK_FRAUD_RISK" indexType="btree">
+            <column name="fraud_risk"/>
+        </index>
+    </table>
+    
+    <table name="ai_inventory_optimizer_model" resource="default" engine="innodb" comment="AI Inventory Optimizer Model">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="model_type" nullable="false" length="64" comment="Model Type"/>
+        <column xsi:type="varchar" name="model_version" nullable="false" length="32" comment="Model Version"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="32" comment="Status"/>
+        <column xsi:type="decimal" name="accuracy" scale="4" precision="10" nullable="false" default="0" comment="Model Accuracy"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="last_training_date" on_update="false" nullable="true" comment="Last Training Date"/>
+        <column xsi:type="timestamp" name="next_scheduled_training" on_update="false" nullable="true" comment="Next Scheduled Training"/>
+        <column xsi:type="text" name="training_parameters" nullable="true" comment="Training Parameters"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="AI_INVENTORY_OPTIMIZER_MODEL_TYPE">
+            <column name="model_type"/>
+        </constraint>
+    </table>
+    
+    <!-- Magic Moments Tables -->
+    <table name="ai_inventory_magic_moments" resource="default" engine="innodb" comment="AI Inventory Magic Moments">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="moment_type" nullable="false" length="64" comment="Moment Type"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Title"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="decimal" name="impact_value" scale="4" precision="12" unsigned="false" nullable="true" comment="Impact Value"/>
+        <column xsi:type="varchar" name="impact_type" nullable="true" length="64" comment="Impact Type"/>
+        <column xsi:type="text" name="data" nullable="true" comment="Additional Data"/>
+        <column xsi:type="boolean" name="is_read" nullable="false" default="0" comment="Is Read"/>
+        <column xsi:type="boolean" name="is_actioned" nullable="false" default="0" comment="Is Actioned"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="AI_INVENTORY_MAGIC_MOMENTS_MOMENT_TYPE" indexType="btree">
+            <column name="moment_type"/>
+        </index>
+        <index referenceId="AI_INVENTORY_MAGIC_MOMENTS_IS_READ" indexType="btree">
+            <column name="is_read"/>
+        </index>
+    </table>
+    
+    <!-- Success Tracking Table -->
+    <table name="ai_inventory_success_tracker" resource="default" engine="innodb" comment="AI Inventory Success Tracker">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false" comment="User ID"/>
+        <column xsi:type="varchar" name="success_type" nullable="false" length="64" comment="Success Type"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Title"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="decimal" name="impact_value" scale="4" precision="12" unsigned="false" nullable="true" comment="Impact Value"/>
+        <column xsi:type="varchar" name="impact_type" nullable="true" length="64" comment="Impact Type"/>
+        <column xsi:type="decimal" name="time_saved" scale="2" precision="10" unsigned="true" nullable="true" comment="Time Saved (minutes)"/>
+        <column xsi:type="boolean" name="is_highlighted" nullable="false" default="0" comment="Is Highlighted"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="AI_INVENTORY_SUCCESS_TRACKER_USER_ID" indexType="btree">
+            <column name="user_id"/>
+        </index>
+        <index referenceId="AI_INVENTORY_SUCCESS_TRACKER_SUCCESS_TYPE" indexType="btree">
+            <column name="success_type"/>
+        </index>
+    </table>
+    
+    <!-- Business Goals Table -->
+    <table name="ai_inventory_business_goals" resource="default" engine="innodb" comment="AI Inventory Business Goals">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="goal_code" nullable="false" length="64" comment="Goal Code"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="255" comment="Title"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="decimal" name="target_value" scale="4" precision="12" unsigned="false" nullable="true" comment="Target Value"/>
+        <column xsi:type="varchar" name="value_type" nullable="true" length="64" comment="Value Type"/>
+        <column xsi:type="int" name="priority" unsigned="true" nullable="false" default="0" comment="Priority"/>
+        <column xsi:type="boolean" name="is_active" nullable="false" default="1" comment="Is Active"/>
+        <column xsi:type="date" name="start_date" nullable="true" comment="Start Date"/>
+        <column xsi:type="date" name="end_date" nullable="true" comment="End Date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="AI_INVENTORY_BUSINESS_GOALS_GOAL_CODE">
+            <column name="goal_code"/>
+        </constraint>
+    </table>
+    
+    <!-- Onboarding Progress Table -->
+    <table name="ai_inventory_onboarding_progress" resource="default" engine="innodb" comment="AI Inventory Onboarding Progress">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false" comment="User ID"/>
+        <column xsi:type="varchar" name="step_code" nullable="false" length="64" comment="Step Code"/>
+        <column xsi:type="boolean" name="is_completed" nullable="false" default="0" comment="Is Completed"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="completed_at" on_update="false" nullable="true" comment="Completed At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="AI_INVENTORY_ONBOARDING_PROGRESS_USER_STEP">
+            <column name="user_id"/>
+            <column name="step_code"/>
+        </constraint>
+    </table>
+</schema> 

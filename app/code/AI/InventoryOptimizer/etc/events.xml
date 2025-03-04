@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Observer for inventory changes -->
+    <event name="cataloginventory_stock_item_save_after">
+        <observer name="ai_inventory_reorder_agent" instance="AI\InventoryOptimizer\Observer\InventoryChangeObserver"/>
+    </event>
+    
+    <!-- Observer for new orders -->
+    <event name="sales_order_place_after">
+        <observer name="ai_inventory_order_router" instance="AI\InventoryOptimizer\Observer\NewOrderObserver"/>
+    </event>
+    
+    <!-- Observer for payment processing -->
+    <event name="sales_order_payment_pay">
+        <observer name="ai_inventory_fraud_detection" instance="AI\InventoryOptimizer\Observer\PaymentProcessObserver"/>
+    </event>
+    
+    <event name="admin_user_authenticate_after">
+        <observer name="ai_inventory_user_login" instance="AI\InventoryOptimizer\Observer\UserLogin" />
+    </event>
+    
+    <event name="sales_order_place_after">
+        <observer name="ai_inventory_order_placed" instance="AI\InventoryOptimizer\Observer\OrderPlaced" />
+    </event>
+    
+    <event name="catalog_product_save_after">
+        <observer name="ai_inventory_product_saved" instance="AI\InventoryOptimizer\Observer\ProductSaved" />
+    </event>
+    
+    <event name="inventory_source_item_save_after">
+        <observer name="ai_inventory_source_item_saved" instance="AI\InventoryOptimizer\Observer\SourceItemSaved" />
+    </event>
+</config> 

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="AI_InventoryOptimizer::ai_inventory" title="AI Inventory" translate="title" module="AI_InventoryOptimizer" sortOrder="50" parent="Magento_Backend::stores" resource="AI_InventoryOptimizer::ai_inventory"/>
+        <add id="AI_InventoryOptimizer::dashboard" title="Dashboard" translate="title" module="AI_InventoryOptimizer" sortOrder="10" parent="AI_InventoryOptimizer::ai_inventory" action="ai_inventory/dashboard" resource="AI_InventoryOptimizer::dashboard"/>
+        <add id="AI_InventoryOptimizer::magic_moments" title="Magic Moments" translate="title" module="AI_InventoryOptimizer" sortOrder="20" parent="AI_InventoryOptimizer::ai_inventory" action="ai_inventory/magicmoments" resource="AI_InventoryOptimizer::magic_moments"/>
+        <add id="AI_InventoryOptimizer::onboarding" title="Onboarding" module="AI_InventoryOptimizer" sortOrder="30" parent="AI_InventoryOptimizer::ai_inventory" action="ai_inventory/onboarding" resource="AI_InventoryOptimizer::onboarding"/>
+        <add id="AI_InventoryOptimizer::success_tracker" title="Success Tracker" module="AI_InventoryOptimizer" sortOrder="40" parent="AI_InventoryOptimizer::ai_inventory" action="ai_inventory/successtracker" resource="AI_InventoryOptimizer::success_tracker"/>
+        <add id="AI_InventoryOptimizer::settings" title="Settings" module="AI_InventoryOptimizer" sortOrder="50" parent="AI_InventoryOptimizer::ai_inventory" action="adminhtml/system_config/edit/section/ai_inventory_optimizer" resource="AI_InventoryOptimizer::settings"/>
+        <add id="AI_InventoryOptimizer::integrations" title="External Integrations" translate="title" module="AI_InventoryOptimizer" sortOrder="30" parent="AI_InventoryOptimizer::ai_inventory" action="ai_inventory/integration" resource="AI_InventoryOptimizer::integrations"/>
+    </menu>
+</config> 

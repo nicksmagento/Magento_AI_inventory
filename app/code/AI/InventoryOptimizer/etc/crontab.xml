@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="ai_inventory_optimizer">
+        <job name="ai_demand_forecasting" instance="AI\InventoryOptimizer\Cron\DemandForecasting" method="execute">
+            <schedule>0 1 * * *</schedule>
+        </job>
+        <job name="ai_stock_balancing" instance="AI\InventoryOptimizer\Cron\StockBalancing" method="execute">
+            <schedule>0 */4 * * *</schedule>
+        </job>
+        <job name="ai_multichannel_sync" instance="AI\InventoryOptimizer\Cron\MultichannelSync" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="ai_magic_moments_detector" instance="AI\InventoryOptimizer\Cron\DetectOpportunities" method="execute">
+            <schedule>0 */4 * * *</schedule>
+        </job>
+        <job name="ai_instant_value_generator" instance="AI\InventoryOptimizer\Cron\GenerateInstantInsights" method="execute">
+            <schedule>0 1 * * *</schedule>
+        </job>
+        <job name="ai_integration_sync" instance="AI\InventoryOptimizer\Cron\SyncIntegrations" method="execute">
+            <schedule>*/15 * * * *</schedule>
+            <config_path>crontab/ai_inventory_optimizer/jobs/ai_integration_sync/schedule/cron_expr</config_path>
+        </job>
+    </group>
+</config> 

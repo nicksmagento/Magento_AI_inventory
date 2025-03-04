@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * AI Inventory Optimizer Dependency Injection Configuration
+ *
+ * @category  AI
+ * @package   AI_InventoryOptimizer
+ * @author    AI Inventory Team <support@example.com>
+ * @copyright 2023 AI Inventory (https://www.example.com)
+ * @license   https://opensource.org/licenses/OSL-3.0 OSL-3.0
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Logger configuration -->
+    <type name="AI\InventoryOptimizer\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="AI\InventoryOptimizer\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">aiInventoryOptimizer</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">AI\InventoryOptimizer\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <!-- API implementations -->
+    <preference for="AI\InventoryOptimizer\Api\MagicMomentManagementInterface" 
+                type="AI\InventoryOptimizer\Model\MagicMomentManagement"/>
+    <preference for="AI\InventoryOptimizer\Api\OpportunityDetectionInterface" 
+                type="AI\InventoryOptimizer\Model\OpportunityDetection"/>
+    <preference for="AI\InventoryOptimizer\Api\InstantValueGeneratorInterface" 
+                type="AI\InventoryOptimizer\Model\InstantValueGenerator"/>
+    <preference for="AI\InventoryOptimizer\Api\SuccessTrackerRepositoryInterface" 
+                type="AI\InventoryOptimizer\Model\SuccessTrackerRepository"/>
+    
+    <!-- Data interfaces -->
+    <preference for="AI\InventoryOptimizer\Api\Data\SuccessTrackerInterface" 
+                type="AI\InventoryOptimizer\Model\Data\SuccessTracker"/>
+    <preference for="AI\InventoryOptimizer\Api\Data\SuccessTrackerSearchResultsInterface" 
+                type="Magento\Framework\Api\SearchResults"/>
+    <preference for="AI\InventoryOptimizer\Api\Data\MagicMomentInterface" 
+                type="AI\InventoryOptimizer\Model\Data\MagicMoment"/>
+    <preference for="AI\InventoryOptimizer\Api\Data\MagicMomentSearchResultsInterface" 
+                type="Magento\Framework\Api\SearchResults"/>
+    
+    <!-- Virtual types for data providers -->
+    <virtualType name="AI\InventoryOptimizer\Model\ResourceModel\MagicMoment\Grid\Collection" 
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ai_inventory_magic_moments</argument>
+            <argument name="resourceModel" xsi:type="string">AI\InventoryOptimizer\Model\ResourceModel\MagicMoment</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AI\InventoryOptimizer\Model\ResourceModel\SuccessTracker\Grid\Collection" 
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ai_inventory_success_tracker</argument>
+            <argument name="resourceModel" xsi:type="string">AI\InventoryOptimizer\Model\ResourceModel\SuccessTracker</argument>
+        </arguments>
+    </virtualType>
+    
+    <!-- UI Component data providers -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ai_inventory_magic_moments_listing_data_source" xsi:type="string">AI\InventoryOptimizer\Model\ResourceModel\MagicMoment\Grid\Collection</item>
+                <item name="ai_inventory_success_tracker_listing_data_source" xsi:type="string">AI\InventoryOptimizer\Model\ResourceModel\SuccessTracker\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+</config> 

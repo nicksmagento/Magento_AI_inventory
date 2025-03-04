@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ai_inventory_training_listing.ai_inventory_training_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="train_all">
+                <url path="*/*/trainAll"/>
+                <class>primary</class>
+                <label translate="true">Train All Models</label>
+            </button>
+        </buttons>
+        <spinner>ai_inventory_training_columns</spinner>
+        <deps>
+            <dep>ai_inventory_training_listing.ai_inventory_training_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ai_inventory_training_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>AI_InventoryOptimizer::training</aclResource>
+        <dataProvider class="AI\InventoryOptimizer\Ui\DataProvider\TrainingDataProvider" name="ai_inventory_training_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <columns name="ai_inventory_training_columns">
+        <column name="entity_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="model_type">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Model Type</label>
+            </settings>
+        </column>
+        <column name="model_version">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Version</label>
+            </settings>
+        </column>
+        <column name="status">
+            <settings>
+                <filter>select</filter>
+                <options class="AI\InventoryOptimizer\Model\Source\ModelStatus"/>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="accuracy" class="AI\InventoryOptimizer\Ui\Component\Listing\Column\Accuracy">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Accuracy</label>
+            </settings>
+        </column>
+        <column name="last_training_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Last Trained</label>
+            </settings>
+        </column>
+        <column name="next_scheduled_training" class="Magento\Ui\Component\Listing\Columns\Date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Next Training</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="AI\InventoryOptimizer\Ui\Component\Listing\Column\TrainingActions">
+            <settings>
+                <indexField>entity_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing> 

@@ -1,0 +1,43 @@
+# Composer
+/vendor/
+composer.lock
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Generated files
+/generated/
+
+# Log files
+/var/log/
+*.log
+
+# Cache files
+/var/cache/
+/var/page_cache/
+/var/view_preprocessed/
+
+# Session files
+/var/session/
+
+# Backup files
+*.bak
+*.swp
+*~
+
+# Build files
+/pub/static/_cache/
+/pub/static/adminhtml/
+/pub/static/frontend/ 

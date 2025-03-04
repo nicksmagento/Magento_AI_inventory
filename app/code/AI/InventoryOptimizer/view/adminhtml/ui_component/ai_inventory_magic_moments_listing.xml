@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ai_inventory_magic_moments_listing.ai_inventory_magic_moments_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="refresh">
+                <url path="*/*/refresh"/>
+                <class>primary</class>
+                <label translate="true">Detect New Opportunities</label>
+            </button>
+        </buttons>
+        <spinner>ai_inventory_magic_moments_columns</spinner>
+        <deps>
+            <dep>ai_inventory_magic_moments_listing.ai_inventory_magic_moments_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ai_inventory_magic_moments_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>AI_InventoryOptimizer::magic_moments</aclResource>
+        <dataProvider class="AI\InventoryOptimizer\Ui\DataProvider\MagicMomentDataProvider" name="ai_inventory_magic_moments_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <columns name="ai_inventory_magic_moments_columns">
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="entity_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="moment_type">
+            <settings>
+                <filter>select</filter>
+                <options class="AI\InventoryOptimizer\Model\Source\MomentType"/>
+                <label translate="true">Type</label>
+                <dataType>select</dataType>
+            </settings>
+        </column>
+        <column name="title">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+        <column name="impact_value" class="Magento\Ui\Component\Listing\Columns\Price">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Impact Value</label>
+            </settings>
+        </column>
+        <column name="is_read" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+                <label translate="true">Read</label>
+            </settings>
+        </column>
+        <column name="is_actioned" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+                <label translate="true">Actioned</label>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="AI\InventoryOptimizer\Ui\Component\Listing\Column\MagicMomentActions">
+            <settings>
+                <indexField>entity_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing> 
