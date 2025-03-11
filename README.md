@@ -1,6 +1,6 @@
 # AI Inventory Optimizer for Magento 2
 
-# Feel Free to use, enhance, correct, etc.
+# Feel Free to use, enhance, correct, etc. - Nick S. (author)
 
 [![Latest Stable Version](https://poser.pugx.org/ai/module-inventory-optimizer/v/stable)](https://packagist.org/packages/ai/module-inventory-optimizer)
 [![Total Downloads](https://poser.pugx.org/ai/module-inventory-optimizer/downloads)](https://packagist.org/packages/ai/module-inventory-optimizer)
