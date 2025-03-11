@@ -63,7 +63,7 @@ For detailed documentation, please visit:
 
 ## Support
 
-For issues, questions, or contributions, please contact us at support@example.com or open an issue on our GitHub repository.
+For issues, questions, or contributions, please contact us at ns90212@gmail.com or open an issue on our GitHub repository.
 
 ## License
 
